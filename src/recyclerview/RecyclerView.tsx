@@ -568,6 +568,7 @@ const RecyclerViewComponent = <T,>(
           maintainVisibleContentPosition={
             maintainVisibleContentPositionInternal
           }
+          removeClippedSubviews={false}
           refreshControl={refreshControl}
           {...overrideProps}
         >
