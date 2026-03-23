@@ -15,6 +15,16 @@ description: Create a GitHub PR for FlashList. Ensures no AI/Claude attribution 
 
 ---
 
+## Step 0 — Kill Background Processes (MANDATORY on CI)
+
+Before creating the branch and PR, kill any background processes you started (Metro, emulators, etc.). On CI, leftover processes prevent the GitHub Actions job from exiting.
+
+```bash
+lsof -ti:8081 | xargs kill -9 2>/dev/null || true
+```
+
+---
+
 ## Step 1 — Create Branch and Commit
 
 ### Branch naming
@@ -110,10 +120,12 @@ Fixes #<number>
 - [ ] No regressions on related screens
 EOF
 
-gh pr create \
+GH_TOKEN="$AGENT_PR_TOKEN" gh pr create \
   --title "fix(<scope>): <description>" \
   --body-file /tmp/pr-body.md
 ```
+
+**MANDATORY:** The `GH_TOKEN="$AGENT_PR_TOKEN"` prefix is required. PRs created without it cannot be merged. On CI, `AGENT_PR_TOKEN` is set automatically from `SHOPIFY_GH_ACCESS_TOKEN`. Locally, ensure it is exported or pass your token directly.
 
 Before running `gh pr create`, double-check:
 - [ ] No mention of Claude, AI, Anthropic, or any AI tool anywhere
