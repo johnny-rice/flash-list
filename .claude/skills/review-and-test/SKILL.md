@@ -52,6 +52,19 @@ yarn type-check
 yarn lint
 ```
 
+### Fixture type-check (if fixture files changed)
+
+Root `yarn type-check` only covers `src/` — the fixture has a separate `tsconfig.json`. Root `yarn lint` does cover fixture files.
+
+If any files in `fixture/react-native/` were modified, also run:
+
+```bash
+git diff main...HEAD --name-only | grep 'fixture/react-native/'
+
+# If matches found:
+cd fixture/react-native && yarn build   # tsc -b — catches type errors in fixture code
+```
+
 ### E2E Tests
 
 **Run E2E tests if any of these changed in the PR/branch:**
